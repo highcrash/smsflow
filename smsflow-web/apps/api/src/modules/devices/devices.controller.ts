@@ -22,15 +22,20 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { IsString, IsNumber, IsOptional, IsBoolean, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
+class DeviceInfoBody {
+  @IsString() name: string;
+  @IsString() model: string;
+  @IsOptional() @IsString() manufacturer?: string;
+  @IsString() osVersion: string;
+  @IsString() appVersion: string;
+  @IsNumber() @Min(1) @Max(10) simCount: number;
+  @IsOptional() sims?: any[];
+  @IsOptional() @IsString() fcmToken?: string;
+}
+
 class CompletePairingDto {
   @ApiProperty() @IsString() token: string;
-  @ApiProperty() @IsString() name: string;
-  @ApiProperty() @IsString() model: string;
-  @ApiProperty() @IsString() osVersion: string;
-  @ApiProperty() @IsString() appVersion: string;
-  @ApiProperty() @IsNumber() @Min(1) @Max(3) simCount: number;
-  @ApiPropertyOptional() @IsOptional() simDetails?: Record<string, unknown>;
-  @ApiPropertyOptional() @IsOptional() @IsString() fcmToken?: string;
+  @ApiProperty() device: DeviceInfoBody;
 }
 
 class HeartbeatDto {

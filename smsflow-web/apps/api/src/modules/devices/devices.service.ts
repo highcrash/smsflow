@@ -13,13 +13,16 @@ import { nanoid } from 'nanoid';
 
 interface CompletePairingDto {
   token: string;
-  name: string;
-  model: string;
-  osVersion: string;
-  appVersion: string;
-  simCount: number;
-  simDetails?: Record<string, unknown>;
-  fcmToken?: string;
+  device: {
+    name: string;
+    model: string;
+    manufacturer?: string;
+    osVersion: string;
+    appVersion: string;
+    simCount: number;
+    sims?: any[];
+    fcmToken?: string;
+  };
 }
 
 interface HeartbeatDto {
@@ -102,13 +105,14 @@ export class DevicesService {
     const updatedDevice = await this.prisma.device.update({
       where: { id: device.id },
       data: {
-        name: dto.name,
-        model: dto.model,
-        osVersion: dto.osVersion,
-        appVersion: dto.appVersion,
-        simCount: dto.simCount,
-        simDetails: dto.simDetails as any,
-        fcmToken: dto.fcmToken,
+        name: dto.device.name,
+        model: dto.device.model,
+        manufacturer: dto.device.manufacturer,
+        osVersion: dto.device.osVersion,
+        appVersion: dto.device.appVersion,
+        simCount: dto.device.simCount,
+        simDetails: dto.device.sims as any,
+        fcmToken: dto.device.fcmToken,
         accessTokenHash,
         refreshTokenHash,
         encryptionKey,
