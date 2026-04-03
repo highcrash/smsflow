@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+.turbo/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Android
+smsflow-android/app/build/
+smsflow-android/build/
+smsflow-android/.gradle/
+smsflow-android/local.properties
+smsflow-android/app/google-services.json
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+*.pem
+
+# Misc
+coverage/
+.vercel/
+*.tar.gz

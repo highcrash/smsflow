@@ -1,0 +1,362 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  PAUSED
+}
+
+enum DeviceStatus {
+  ONLINE
+  OFFLINE
+  PAIRING
+  ERROR
+}
+
+enum MessageStatus {
+  PENDING
+  QUEUED
+  DISPATCHED
+  SENT
+  DELIVERED
+  FAILED
+  EXPIRED
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum BatchStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum TeamMemberRole {
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum TeamMemberStatus {
+  PENDING
+  ACTIVE
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String?
+  name          String?
+  avatarUrl     String?
+  role          UserRole @default(USER)
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts        Account[]
+  subscription    Subscription?
+  devices         Device[]
+  messages        Message[]
+  bulkBatches     BulkBatch[]
+  contacts        Contact[]
+  contactGroups   ContactGroup[]
+  templates       Template[]
+  apiKeys         ApiKey[]
+  webhooks        Webhook[]
+  teamMemberships TeamMember[] @relation("TeamMemberUser")
+  ownedTeam       TeamMember[] @relation("TeamOwner")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  provider          String
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Plan {
+  id            String         @id
+  name          String
+  stripePriceId String         @unique
+  price         Int
+  interval      String         @default("month")
+  smsLimit      Int
+  deviceLimit   Int
+  contactLimit  Int
+  templateLimit Int
+  webhookLimit  Int
+  teamLimit     Int
+  features      Json
+  isActive      Boolean        @default(true)
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  stripeCustomerId     String             @unique
+  stripeSubscriptionId String?            @unique
+  planId               String
+  status               SubscriptionStatus @default(TRIAL)
+  smsUsedThisPeriod    Int                @default(0)
+  smsLimit             Int                @default(500)
+  deviceLimit          Int                @default(1)
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  trialEndsAt          DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan     Plan      @relation(fields: [planId], references: [id])
+  invoices Invoice[]
+}
+
+model Invoice {
+  id              String       @id @default(cuid())
+  subscriptionId  String
+  stripeInvoiceId String       @unique
+  amount          Int
+  currency        String       @default("usd")
+  status          String
+  invoiceUrl      String?
+  invoicePdfUrl   String?
+  paidAt          DateTime?
+  createdAt       DateTime     @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+}
+
+model Device {
+  id               String       @id @default(cuid())
+  userId           String
+  name             String
+  model            String?
+  manufacturer     String?
+  osVersion        String?
+  appVersion       String?
+  simCount         Int          @default(1)
+  simDetails       Json?
+  status           DeviceStatus @default(PAIRING)
+  batteryLevel     Int?
+  signalStrength   Int?
+  lastSeenAt       DateTime?
+  pairingToken     String?      @unique
+  pairingExpiresAt DateTime?
+  accessTokenHash  String?
+  refreshTokenHash String?
+  fcmToken         String?
+  encryptionKey    String?
+  isEnabled        Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Message {
+  id           String           @id @default(cuid())
+  userId       String
+  deviceId     String?
+  phoneNumber  String
+  body         String
+  status       MessageStatus    @default(PENDING)
+  direction    MessageDirection @default(OUTBOUND)
+  simSlot      Int?
+  templateId   String?
+  bulkBatchId  String?
+  errorCode    String?
+  errorMessage String?
+  metadata     Json?
+  scheduledAt  DateTime?
+  sentAt       DateTime?
+  deliveredAt  DateTime?
+  failedAt     DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device    Device?    @relation(fields: [deviceId], references: [id])
+  template  Template?  @relation(fields: [templateId], references: [id])
+  bulkBatch BulkBatch? @relation(fields: [bulkBatchId], references: [id])
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, status])
+  @@index([deviceId])
+  @@index([bulkBatchId])
+  @@index([phoneNumber])
+}
+
+model BulkBatch {
+  id          String      @id @default(cuid())
+  userId      String
+  name        String
+  totalCount  Int         @default(0)
+  sentCount   Int         @default(0)
+  failedCount Int         @default(0)
+  status      BatchStatus @default(PENDING)
+  templateId  String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[]
+}
+
+model Contact {
+  id          String   @id @default(cuid())
+  userId      String
+  phoneNumber String
+  firstName   String?
+  lastName    String?
+  email       String?
+  company     String?
+  tags        String[]
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupMembers ContactGroupMember[]
+
+  @@unique([userId, phoneNumber])
+  @@index([userId])
+}
+
+model ContactGroup {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  color     String   @default("#10B981")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  members ContactGroupMember[]
+
+  @@unique([userId, name])
+}
+
+model ContactGroupMember {
+  contactId String
+  groupId   String
+  addedAt   DateTime @default(now())
+
+  contact Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  group   ContactGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@id([contactId, groupId])
+}
+
+model Template {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  body      String
+  variables String[]
+  category  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@index([userId])
+}
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  userId      String
+  name        String
+  keyHash     String    @unique
+  keyPrefix   String
+  permissions String[]
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Webhook {
+  id        String   @id @default(cuid())
+  userId    String
+  url       String
+  secret    String
+  events    String[]
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs WebhookLog[]
+
+  @@index([userId])
+}
+
+model WebhookLog {
+  id         String   @id @default(cuid())
+  webhookId  String
+  userId     String
+  event      String
+  payload    Json
+  statusCode Int?
+  response   String?
+  success    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  webhook Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId])
+  @@index([userId])
+}
+
+model TeamMember {
+  id        String           @id @default(cuid())
+  ownerId   String
+  email     String
+  role      TeamMemberRole   @default(MEMBER)
+  status    TeamMemberStatus @default(PENDING)
+  invitedAt DateTime         @default(now())
+  joinedAt  DateTime?
+
+  owner User  @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  user  User? @relation("TeamMemberUser", fields: [email], references: [email])
+
+  @@unique([ownerId, email])
+}

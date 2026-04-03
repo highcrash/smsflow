@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "SMSFlow Web (Next.js)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@smsflow/web", "dev"],
+      "port": 3000,
+      "cwd": "D:/SMSGATEWAY/smsflow-web"
+    },
+    {
+      "name": "SMSFlow API (NestJS)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@smsflow/api", "start:dev"],
+      "port": 3001,
+      "cwd": "D:/SMSGATEWAY/smsflow-web"
+    },
+    {
+      "name": "SMSFlow Database (PostgreSQL via Docker)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "-f", "D:/SMSGATEWAY/smsflow-web/docker-compose.dev.yml", "up", "postgres", "redis"],
+      "port": 5432,
+      "cwd": "D:/SMSGATEWAY/smsflow-web"
+    }
+  ]
+}

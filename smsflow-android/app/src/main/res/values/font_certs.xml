@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="com_google_android_gms_fonts_certs">
+        <item>@array/com_google_android_gms_fonts_certs_dev</item>
+        <item>@array/com_google_android_gms_fonts_certs_prod</item>
+    </array>
+    <string-array name="com_google_android_gms_fonts_certs_dev">
+        <item>
+            MIIEqDCCA5CgAwIBAgIJANWFuGx90071MA0GCSqGSIb3DQEBBAUAMIGUMQswCQYD
+            VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FudGEgTW9u
+            aWNhMRMwEQYDVQQKEwpHb29nbGUgSW5jMRcwFQYDVQQLEw5DbG91ZCBQbGF0Zm9y
+            bTEaMBgGA1UEAxMRR29vZ2xlIENsb3VkIFRlc3QwHhcNMTMwNjI1MDUxNjM4WhcN
+            MjMwNjIzMDUxNjM4WjCBlDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3Ju
+            aWExFjAUBgNVBAcTDVNhbnRhIE1vbmljYTETMBEGA1UEChMKR29vZ2xlIEluYzEX
+            MBUGA1UECxMOQ2xvdWQgUGxhdGZvcm0xGjAYBgNVBAMTEUdvb2dsZSBDbG91ZCBU
+            ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2+MlqtbJMvYtAHJN
+            o7Gp5DzfkVMa2MqyPnI0Xnx2oMVfpAOmhZdR9cQkJ5WD0C8eGRk9LU0e5kz2zIO
+            lGnGtdN5cYGZK5gWdUqWe8FwU1zFRs4bkMBHl9bD5ShlC3YP8YaX7sQtH7GwHxjm
+            Rj1nI6B5R2Q3nXBhFzJvdPuHPxMQaF1qrFUH6xN9XMQpbPNrVrS5cQdVxwJoVCYN
+            sFrSilVrIuMHCrX2i7RGCrMqwkNBcVRVPKJdcqMhAz4GQJxO2S1GaYoujFkHGQl4
+            JhijF6h5GQE89zF7NRzQilW1e3j3VKPuPsJKuYfJv3/S3mlEF/K9fD6iJnthzwID
+            AQABo4HoMIHlMB0GA1UdDgQWBBRt/jXJhYxMxU4qBKfOlMx3lAYT5jCBtQYDVR0j
+            BIGtMIGqgBRt/jXJhYxMxU4qBKfOlMx3lAYT5qGBmKSBlTCBlDELMAkGA1UEBhMC
+            VVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbnRhIE1vbmljYTET
+            MBEGA1UEChMKR29vZ2xlIEluYzEXMBUGA1UECxMOQ2xvdWQgUGxhdGZvcm0xGjAY
+            BgNVBAMTEUdvb2dsZSBDbG91ZCBUZXN0ggkA1YW4bH3QTjEwDAYDVR0TBAUwAwEB
+            /zANBgkqhkiG9w0BAQQFAAOCAQEAJioHJbEO9rSgTEEBxC1ILpXVLjwHtPZo0BwM
+            tCVWAEqv0KBkFTjDmuvFPNLd+EXhgVBHPCFX4ov0iWqiEOBmWzJfFagFKxOeqHPn
+            GfQALAiVFh7XRCD5HTQZ/IkSP3U0b9/RtlexknCFdBVQ9nJy4o/xDW0VJvsMFZBo
+            TjrHjHqS7Tqy+LQRkn1zG6JDNSS4zJp6hWPd1KrRTBKb6Tl2Z8N1qCJwBL3d6Wb
+            X+a5Oa0J26J0P+QCJfKJJbXaDL9qPJZrR8O/JKSsF2UBpDG8bNBL7f/kzQx3MNCD
+            ZfjHVa+H4+dZfEkCwdEIqQ0VK1mP2Wq0L/M4h0uqbAMUeA==
+        </item>
+    </string-array>
+    <string-array name="com_google_android_gms_fonts_certs_prod">
+        <item>
+            MIIEQzCCAyugAwIBAgIJAMLgh0ZkSjCNMA0GCSqGSIb3DQEBBAUAMHQxCzAJBgNV
+            BAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBW
+            aWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4G
+            A1UEAxMHQW5kcm9pZDAeFw0wODA4MjEyMzEzMzRaFw0zNjAxMDcyMzEzMzRaMHQx
+            CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3Vu
+            dGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9p
+            ZDEQMA4GA1UEAxMHQW5kcm9pZDCCASAwDQYJKoZIhvcNAQEBBQADggENADCCAQgC
+            ggEBAKtWLgDYO6IIrgqWbxJOKdoR8qtW0I9Y4sypEwPpt1TTcvZApxsdyxMJsWd9
+            PE0f7p+xf0a1JxbQBNH2RCTjHFxNkhXCOCRBU0+GPHjQMmZVajPKH8eQTBFSEoRn
+            RZ5m9A/Wk4J7wR+MzNbExBizTF6/tSi0Pu1VJ5PUJVEJJfGXoAbzfB4LFZBwWQAh
+            7B/tBBbCJxRpFD7p3gxN4Z4vWiKBXFDaHKNf87hT0vCHVLmQ6VnpS1FrD+Y87Smw
+            3S3LqGHDjzRFpJREMRMN3oLdKv1ZaXNvZzJsN4/RRaKJjZXQXEcV2gYmkFyxHkOC
+            7iMvb6N8f1FtUbLVzeMRoFUCAwEAAaOB1zCB1DAdBgNVHQ4EFgQUBJYe/wG3Sp57
+            nxC6RvUXKvgj3OgwgaQGA1UdIwSBnDCBmYAUBJYe/wG3Sp57nxC6RvUXKvgj3Oih
+            eKR2MHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH
+            Ew1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMH
+            QW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZIIJAMLgh0ZkSjCNMAwGA1UdEwQFMAMB
+            Af8wDQYJKoZIhvcNAQEEBQADggEBABt2pLWtAs14L68iAjyiFpVRAAjkbLBB8dFe
+            qFsNZ0bzG1xfqb2FxqG1FTLF7hzjx3gPeBGp5vDP2y1Tlu3yBNnvvRVQQ3HqRZDu
+            GmYcpJXuYYyK/q3x5jY/L5GLVG2UVXVbgmFVEieLHn9v3UwkGfx3P5Y2l+2G2N6B
+            QzJIiqTQvTNsHBTHLRR3bJ0+e6w1MxLWq0J2jBXzYZ4d77J8YfNGQixODXwLjqRI
+            kVQEG4P/JzU2UQMT5iSEAyHUzFYpgpx0fRvHi0bqlf4BkPjK8mvMPO0lX0CBHG0j
+            EGJsTBXFi2JVe3sJ7E8Ts1wI8UG/zn4rRvdxlWgm8xbGLjE=
+        </item>
+    </string-array>
+</resources>

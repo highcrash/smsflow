@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports: ['5432:5432']
+    environment:
+      POSTGRES_USER: smsflow
+      POSTGRES_PASSWORD: smsflow_pass
+      POSTGRES_DB: smsflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U smsflow']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports: ['6379:6379']
+    volumes:
+      - redis_data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    ports: ['3001:3001']
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://192.168.86.33:3001
+        NEXT_PUBLIC_WS_URL: ws://192.168.86.33:3001
+    restart: unless-stopped
+    ports: ['3000:3000']
+    env_file: .env
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:
