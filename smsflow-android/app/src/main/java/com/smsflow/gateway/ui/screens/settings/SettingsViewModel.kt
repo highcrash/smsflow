@@ -18,7 +18,7 @@ class SettingsViewModel(
 ) : ViewModel() {
 
     val serverUrl = preferencesManager.serverUrl.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000), "https://api.smsflow.io"
+        viewModelScope, SharingStarted.WhileSubscribed(5000), "http://134.209.108.40:3001/api/v1"
     )
     val localServerEnabled = preferencesManager.localServerEnabled.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), false

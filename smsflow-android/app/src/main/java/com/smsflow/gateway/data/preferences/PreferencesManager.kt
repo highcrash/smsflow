@@ -40,7 +40,7 @@ class PreferencesManager(private val context: Context) {
     val accessToken: Flow<String?> = context.dataStore.data.map { it[KEY_ACCESS_TOKEN] }
     val refreshToken: Flow<String?> = context.dataStore.data.map { it[KEY_REFRESH_TOKEN] }
     val deviceId: Flow<String?> = context.dataStore.data.map { it[KEY_DEVICE_ID] }
-    val serverUrl: Flow<String> = context.dataStore.data.map { it[KEY_SERVER_URL] ?: "https://api.smsflow.io" }
+    val serverUrl: Flow<String> = context.dataStore.data.map { it[KEY_SERVER_URL] ?: "http://134.209.108.40:3001" }
     val wsUrl: Flow<String?> = context.dataStore.data.map { it[KEY_WS_URL] }
     val isPaired: Flow<Boolean> = context.dataStore.data.map { it[KEY_IS_PAIRED] ?: false }
     val isGatewayRunning: Flow<Boolean> = context.dataStore.data.map { it[KEY_IS_GATEWAY_RUNNING] ?: false }

@@ -89,7 +89,7 @@ fun ServerSettingsScreen(
                 value = serverUrl,
                 onValueChange = { viewModel.setServerUrl(it) },
                 label = "Server URL",
-                placeholder = "https://api.smsflow.io",
+                placeholder = "http://134.209.108.40:3001/api/v1",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri)
             )
 

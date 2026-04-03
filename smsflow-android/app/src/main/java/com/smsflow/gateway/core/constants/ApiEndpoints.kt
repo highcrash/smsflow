@@ -1,8 +1,8 @@
 package com.smsflow.gateway.core.constants
 
 object ApiEndpoints {
-    const val BASE_URL = "https://api.smsflow.io"
-    const val WS_BASE_URL = "wss://api.smsflow.io"
+    const val BASE_URL = "http://134.209.108.40:3001"
+    const val WS_BASE_URL = "ws://134.209.108.40:3001"
 
     // Auth
     const val PAIR_DEVICE = "/api/v1/devices/pair"

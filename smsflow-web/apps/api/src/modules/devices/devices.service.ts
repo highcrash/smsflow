@@ -72,7 +72,7 @@ export class DevicesService {
       qrData: {
         v: 1,
         t: pairingToken,
-        u: `${apiUrl}/api/v1`,
+        u: apiUrl,
         e: Math.floor(expiresAt.getTime() / 1000),
       },
     };

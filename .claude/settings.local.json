@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/highc/.claude/**)",
+      "Bash(docker compose:*)",
+      "Bash(DATABASE_URL=\"postgresql://smsflow:password@localhost:5433/smsflow?schema=public\" npx prisma db push --schema=src/prisma/schema.prisma)",
+      "Bash(cp .env apps/api/.env)",
+      "Bash(pnpm --filter @smsflow/api run build)",
+      "Bash(DATABASE_URL=\"postgresql://smsflow:password@localhost:5433/smsflow?schema=public\" REDIS_URL=\"redis://localhost:6379\" JWT_SECRET=\"dev-jwt-secret-key-min-32-chars-long\" JWT_REFRESH_SECRET=\"dev-jwt-refresh-secret-key-32chars\" node dist/main)",
+      "Bash(echo \"API PID: $!\")",
+      "Bash(curl -s http://localhost:3001)"
+    ]
+  }
+}
