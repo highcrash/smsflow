@@ -19,7 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { DevicesService } from './devices.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { IsString, IsNumber, IsOptional, IsBoolean, Min, Max } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsBoolean, Min, Max, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class DeviceInfoBody {
@@ -35,7 +36,7 @@ class DeviceInfoBody {
 
 class CompletePairingDto {
   @ApiProperty() @IsString() token: string;
-  @ApiProperty() device: DeviceInfoBody;
+  @ApiProperty() @ValidateNested() @Type(() => DeviceInfoBody) device: DeviceInfoBody;
 }
 
 class HeartbeatDto {
