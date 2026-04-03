@@ -73,7 +73,7 @@ export class DevicesService {
         v: 1,
         t: pairingToken,
         u: `${apiUrl}/api/v1`,
-        e: expiresAt.toISOString(),
+        e: Math.floor(expiresAt.getTime() / 1000),
       },
     };
   }
