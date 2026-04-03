@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { DevicesGateway } from '../../gateway/ws.gateway';
+import { DeviceConnectionManager } from '../../gateway/device-connections';
 import { IsString, IsOptional, IsNumber, IsDateString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -39,7 +39,7 @@ export interface MessageFilters {
 export class MessagesService {
   constructor(
     private prisma: PrismaService,
-    private wsGateway: DevicesGateway,
+    private deviceConnections: DeviceConnectionManager,
   ) {}
 
   async sendMessage(userId: string, dto: SendMessageDto) {
@@ -96,12 +96,17 @@ export class MessagesService {
       return message;
     }
 
-    // Dispatch via WebSocket
-    const dispatched = this.wsGateway.sendSmsToDevice(deviceId, {
-      messageId: message.id,
-      to: dto.phoneNumber,
-      body: dto.body,
-      simSlot: dto.simSlot,
+    // Dispatch via WebSocket to Android device
+    const dispatched = this.deviceConnections.sendToDevice(deviceId, {
+      type: 'SEND_SMS',
+      id: message.id,
+      timestamp: Date.now(),
+      payload: {
+        messageId: message.id,
+        to: dto.phoneNumber,
+        body: dto.body,
+        simSlot: dto.simSlot,
+      },
     });
 
     // Update status

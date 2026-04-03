@@ -248,9 +248,10 @@ export class DevicesGateway implements OnGatewayConnection, OnGatewayDisconnect 
 
 // Module wrapper
 import { Module } from '@nestjs/common';
+import { DeviceConnectionManager } from './device-connections';
 
 @Module({
-  providers: [DashboardGateway, DevicesGateway],
-  exports: [DashboardGateway, DevicesGateway],
+  providers: [DashboardGateway, DevicesGateway, DeviceConnectionManager],
+  exports: [DashboardGateway, DevicesGateway, DeviceConnectionManager],
 })
 export class WsGatewayModule {}

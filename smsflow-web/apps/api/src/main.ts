@@ -29,13 +29,10 @@ async function bootstrap() {
   // Plain WebSocket server for Android device connections
   const httpServer = app.getHttpServer();
   const wss = new WsServer({ server: httpServer, path: '/ws/devices' });
-  const { DevicesGateway } = await import('./gateway/ws.gateway');
-  const devicesGateway = app.get(DevicesGateway);
   const { PrismaService } = await import('./prisma/prisma.service');
   const prisma = app.get(PrismaService);
-
-  // deviceId -> ws
-  const deviceSockets = new Map<string, import('ws').WebSocket>();
+  const { DeviceConnectionManager } = await import('./gateway/device-connections');
+  const connectionManager = app.get(DeviceConnectionManager);
 
   wss.on('connection', async (ws, req) => {
     const url = new URL(req.url, 'http://localhost');
@@ -57,7 +54,7 @@ async function bootstrap() {
         where: { id: deviceId },
         data: { status: 'ONLINE', lastSeenAt: new Date() },
       });
-      deviceSockets.set(deviceId, ws);
+      connectionManager.register(deviceId, ws);
       console.log(`[WS] Device connected: ${deviceId}`);
 
       ws.on('message', async (raw) => {
@@ -104,7 +101,7 @@ async function bootstrap() {
       });
 
       ws.on('close', async () => {
-        deviceSockets.delete(deviceId);
+        connectionManager.unregister(deviceId);
         try {
           await prisma.device.update({ where: { id: deviceId }, data: { status: 'OFFLINE' } });
         } catch {}
