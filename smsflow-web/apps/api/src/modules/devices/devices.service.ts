@@ -121,8 +121,9 @@ export class DevicesService {
       },
     });
 
-    const wsUrl = (this.config.get('NEXT_PUBLIC_WS_URL') || 'ws://localhost:3001')
+    const baseWs = (this.config.get('NEXT_PUBLIC_API_URL') || 'http://localhost:3001')
       .replace('http://', 'ws://').replace('https://', 'wss://');
+    const wsUrl = `${baseWs}/ws/devices?deviceId=${updatedDevice.id}&token=${accessToken}`;
 
     return {
       deviceId: updatedDevice.id,
