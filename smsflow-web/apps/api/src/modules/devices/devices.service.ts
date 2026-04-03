@@ -121,11 +121,16 @@ export class DevicesService {
       },
     });
 
+    const wsUrl = (this.config.get('NEXT_PUBLIC_WS_URL') || 'ws://localhost:3001')
+      .replace('http://', 'ws://').replace('https://', 'wss://');
+
     return {
       deviceId: updatedDevice.id,
       accessToken,
       refreshToken,
       encryptionKey,
+      wsUrl,
+      expiresAt: Math.floor(Date.now() / 1000) + 86400 * 30, // 30 days
     };
   }
 

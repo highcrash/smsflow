@@ -8,6 +8,7 @@ data class PairResponse(
     @SerialName("deviceId") val deviceId: String,
     @SerialName("accessToken") val accessToken: String,
     @SerialName("refreshToken") val refreshToken: String,
-    @SerialName("wsUrl") val wsUrl: String,
-    @SerialName("expiresAt") val expiresAt: Long
+    @SerialName("encryptionKey") val encryptionKey: String = "",
+    @SerialName("wsUrl") val wsUrl: String = "",
+    @SerialName("expiresAt") val expiresAt: Long = 0
 )
