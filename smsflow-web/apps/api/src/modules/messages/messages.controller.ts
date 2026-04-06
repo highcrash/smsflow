@@ -15,17 +15,23 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { MessagesService, SendMessageDto, SendBulkDto } from './messages.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CombinedAuthGuard } from '../../common/guards/combined-auth.guard';
 
 @ApiTags('messages')
 @Controller('messages')
-@UseGuards(JwtAuthGuard)
+@UseGuards(CombinedAuthGuard)
 @ApiBearerAuth('access-token')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @Post('send')
+  @Post()
   @ApiOperation({ summary: 'Send a single SMS message' })
+  async sendMessageShort(@Request() req: any, @Body() dto: SendMessageDto) {
+    return this.messagesService.sendMessage(req.user.id, dto);
+  }
+
+  @Post('send')
+  @ApiOperation({ summary: 'Send a single SMS message (alias)' })
   async sendMessage(@Request() req: any, @Body() dto: SendMessageDto) {
     return this.messagesService.sendMessage(req.user.id, dto);
   }
